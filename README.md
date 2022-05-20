@@ -16,4 +16,4 @@ The goal in this project is to find the fastest road to philosophy. Here, the ru
 - Following redirects with requests
 
 ## References
-- [Wikiedia](https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy)
+- [Wikipedia](https://en.wikipedia.org/wiki/Wikipedia:Getting_to_Philosophy)
