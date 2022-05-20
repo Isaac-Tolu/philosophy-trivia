@@ -1,11 +1,16 @@
 import re
 import requests
+from argparse import ArgumentParser
 from bs4 import BeautifulSoup
+
+parser = ArgumentParser(description='Fastest Road to Philosophy')
+parser.add_argument('page', help='Valid Wikipedia page')
+args = parser.parse_args()
 
 regex = re.compile('^(/wiki/)((?!:).)*$')
 
 def main():
-    wikiUrl = '/wiki/Water'
+    wikiUrl = f'/wiki/{args.page}'
 
     philosophyCheck = False     # What if random page is philosophy?
     while not philosophyCheck:
