@@ -3,14 +3,14 @@ import requests
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
 
-parser = ArgumentParser(description='Fastest Road to Philosophy')
-parser.add_argument('page', help='Valid Wikipedia page')
-args = parser.parse_args()
+# parser = ArgumentParser(description='Fastest Road to Philosophy')
+# parser.add_argument('page', help='Valid Wikipedia page')
+# args = parser.parse_args()
 
 regex = re.compile('^(/wiki/)((?!:).)*$')
 
 def main():
-    wikiUrl = f'/wiki/{args.page}'
+    # wikiUrl = f'/wiki/{args.page}'
 
     philosophyCheck = False     # What if random page is philosophy?
     while not philosophyCheck:
@@ -38,13 +38,15 @@ def findFirstLink(soup):
     firstParagraph = soup.find('div', attrs={'id': 'bodyContent'}) \
         .find('p', attrs={'class': None})
 
+    return firstParagraph
+
     # Exceptions
     #   - Tags are not found: None or Attribute Error
     
     # It cannot yet check for parenthesized links
-    for link_tag in firstParagraph.find_all('a', href=regex):
-        if link_tag.find_parent().name != 'i':
-            return link_tag.attrs['href']
+    # for link_tag in firstParagraph.find_all('a', href=regex):
+    #     if link_tag.find_parent().name != 'i':
+    #         return link_tag.attrs['href']
 
         # What if a main link is not in the first paragraph
 
