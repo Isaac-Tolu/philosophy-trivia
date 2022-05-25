@@ -2,6 +2,7 @@ import re
 import requests
 from argparse import ArgumentParser
 from bs4 import BeautifulSoup
+from bs4.element import NavigableString, Tag
 
 # parser = ArgumentParser(description='Fastest Road to Philosophy')
 # parser.add_argument('page', help='Valid Wikipedia page')
@@ -10,7 +11,7 @@ from bs4 import BeautifulSoup
 regex = re.compile('^(/wiki/)((?!:).)*$')
 
 def main():
-    # wikiUrl = f'/wiki/{args.page}'
+    wikiUrl = '/wiki/Kevin_Bacon'
 
     philosophyCheck = False     # What if random page is philosophy?
     while not philosophyCheck:
@@ -37,8 +38,22 @@ def prepareSoup(html):
 def findFirstLink(soup):
     firstParagraph = soup.find('div', attrs={'id': 'bodyContent'}) \
         .find('p', attrs={'class': None})
+    gen = firstParagraph.nextGenerator()
 
-    return firstParagraph
+    bracketOpen = False
+    while True:
+        n = next(gen)
+        if type(n) == NavigableString:
+            if '(' in n:           # There's an issue here: If a Navigable String contains both
+                bracketOpen = True
+            if ')' in n:
+                bracketOpen = False
+        elif type(n) == Tag and n.name == 'a':
+            regexSearch = re.search(regex, n.attrs['href'])   # a tag does not contain href
+            if regexSearch is None or n.find_parent().name == 'i' or bracketOpen:
+                continue
+            else:
+                return n.attrs['href']
 
     # Exceptions
     #   - Tags are not found: None or Attribute Error
